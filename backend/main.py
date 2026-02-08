@@ -1,5 +1,6 @@
 # src/main.py
 from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import SQLModel
 from src.config.database import engine
@@ -36,6 +37,6 @@ except Exception:
     # If tasks router isn't ready, keep server running for auth testing
     pass
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+@app.get("/", include_in_schema=False)
+def redirect_to_docs():
+    return RedirectResponse(url="/docs")
