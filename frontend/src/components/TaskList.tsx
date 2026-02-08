@@ -23,7 +23,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onTaskUpdated, onTaskDeleted
 
   const handleToggleComplete = async (task: Task) => {
     try {
-      const updatedTask = await apiClient.toggleTaskCompletion(task.id, !task.completed);
+      const updatedTask = (await apiClient.toggleTaskCompletion(task.id, !task.completed)) as Task;
       onTaskUpdated(updatedTask);
     } catch (error) {
       console.error('Error toggling task completion:', error);
@@ -48,7 +48,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onTaskUpdated, onTaskDeleted
     if (!editText.trim()) return;
 
     try {
-      const updatedTask = await apiClient.updateTask(taskId, editText);
+      const updatedTask = (await apiClient.updateTask(taskId, { title: editText })) as Task;
       onTaskUpdated(updatedTask);
       setEditingTaskId(null);
       setEditText('');

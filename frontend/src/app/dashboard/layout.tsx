@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useAuth } from '../../components/AuthProvider';
 import { useRouter } from 'next/navigation';
 
@@ -8,14 +8,19 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const { user, logout, isAuthenticated } = useAuth();
   const router = useRouter();
 
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.replace('/login'); // replace = no back button issue
+    }
+  }, [isAuthenticated, router]);
+
   if (!isAuthenticated) {
-    router.push('/login');
-    return null;
+    return null; // ya loader
   }
 
   const handleLogout = () => {
     logout();
-    router.push('/login');
+    router.replace('/login');;  
   };
 
   return (
