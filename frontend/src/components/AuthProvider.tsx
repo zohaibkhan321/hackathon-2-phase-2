@@ -7,7 +7,7 @@ import React, {
   useEffect,
   ReactNode,
 } from 'react';
-import { apiClient } from '../lib/api';
+import { apiClient } from '@/lib/api';
 
 interface User {
   id: string;

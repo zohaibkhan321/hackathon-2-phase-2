@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { apiClient } from '../lib/api';
+import { apiClient } from '@/lib/api';
 
 interface TaskFormData {
   title: string;
