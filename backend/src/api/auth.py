@@ -19,7 +19,7 @@ class LoginRequest(BaseModel):
 class AuthUserResponse(BaseModel):
     success: bool
     user: UserRead
-    token: str
+    access_token: str
 
 @router.post("/register", response_model=AuthUserResponse)
 async def register(user: UserCreate, db: Session = Depends(get_db)):
@@ -52,7 +52,7 @@ async def register(user: UserCreate, db: Session = Depends(get_db)):
     return {
         "success": True,
         "user": UserRead.from_orm(db_user),
-        "token": access_token
+        "access_token": access_token
     }
 
 
@@ -84,5 +84,5 @@ async def login(payload: LoginRequest, db: Session = Depends(get_db)):
     return {
         "success": True,
         "user": UserRead.from_orm(db_user),
-        "token": access_token
+        "access_token": access_token
     }

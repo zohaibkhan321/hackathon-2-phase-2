@@ -16,6 +16,7 @@ class User(SQLModel, table=True):
     hashed_password: str
 
     created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
 
     # 🔥 THIS IS REQUIRED
     tasks: List["Task"] = Relationship(back_populates="user")
