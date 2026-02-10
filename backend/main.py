@@ -7,6 +7,7 @@ from src.config.database import engine
 from src.config.logging import setup_logging
 from src.api import auth, tasks, chat  # make sure tasks exists and its router is correct
 from contextlib import asynccontextmanager
+from mangum import Mangum
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -47,3 +48,5 @@ except Exception:
 @app.get("/", include_in_schema=False)
 def redirect_to_docs():
     return RedirectResponse(url="/docs")
+
+handler = Mangum(app)
