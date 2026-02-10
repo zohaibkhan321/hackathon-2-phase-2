@@ -2,14 +2,18 @@
 from sqlmodel import SQLModel, Field, Relationship
 from datetime import datetime
 from uuid import UUID, uuid4
-from typing import Optional, List
+from typing import Optional, List, TYPE_CHECKING
 from sqlalchemy import Column, String
+
+if TYPE_CHECKING:
+    from .task import Task
+    from .conversation import Conversation, Message
 
 class UserBase(SQLModel):
     email: str = Field(index=True, nullable=False)
 
 class User(SQLModel, table=True):
-    __tablename__ = "user"
+    __tablename__ = "users"
 
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     email: str = Field(index=True, unique=True)
@@ -20,6 +24,7 @@ class User(SQLModel, table=True):
 
     # 🔥 THIS IS REQUIRED
     tasks: List["Task"] = Relationship(back_populates="user")
+    conversations: List["Conversation"] = Relationship(back_populates="user")
 
 class UserCreate(SQLModel):
     email: str
@@ -30,6 +35,3 @@ class UserRead(SQLModel):
     email: str
     created_at: datetime
     updated_at: datetime
-
-    class Config:
-        from_attributes = True

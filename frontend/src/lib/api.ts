@@ -130,6 +130,13 @@ class ApiClient {
       body: JSON.stringify({ completed }),
     });
   }
+
+  chat(userId: string, message: string) {
+    return this.request(`/${userId}/chat`, {
+      method: 'POST',
+      body: JSON.stringify({ message }),
+    });
+  }
 }
 
 /* ================================

@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import SQLModel
 from src.config.database import engine
 from src.config.logging import setup_logging
-from src.api import auth, tasks  # make sure tasks exists and its router is correct
+from src.api import auth, tasks, chat  # make sure tasks exists and its router is correct
 from contextlib import asynccontextmanager
 
 @asynccontextmanager
@@ -35,6 +35,13 @@ try:
     app.include_router(tasks.router, prefix="/api/tasks", tags=["tasks"])
 except Exception:
     # If tasks router isn't ready, keep server running for auth testing
+    pass
+
+# include chat router
+try:
+    app.include_router(chat.router, prefix="/api", tags=["chat"])
+except Exception:
+    # If chat router isn't ready, keep server running
     pass
 
 @app.get("/", include_in_schema=False)
