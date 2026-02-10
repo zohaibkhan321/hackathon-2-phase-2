@@ -16,6 +16,7 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
+  token: string | null;
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string) => Promise<void>;
   logout: () => void;
@@ -28,12 +29,13 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState<string | null>(null)
 
   // Restore session on refresh
   useEffect(() => {
     const token = localStorage.getItem('jwt_token');
     const storedUser = localStorage.getItem('currentUser');
-
+     setToken(token)
     if (token && storedUser) {
       setUser(JSON.parse(storedUser));
     }
@@ -48,6 +50,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem('currentUser', JSON.stringify(response.user));
 
     setUser(response.user);
+    setToken(response.access_token)
   };
 
   const register = async (email: string, password: string) => {
@@ -57,12 +60,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem('currentUser', JSON.stringify(response.user));
 
     setUser(response.user);
+    setToken(response.access_token)
   };
 
   const logout = () => {
     localStorage.removeItem('jwt_token');
     localStorage.removeItem('currentUser');
     setUser(null);
+    setToken(null)
     window.location.href = '/login';
   };
 
@@ -75,6 +80,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         logout,
         isAuthenticated: !!user,
         loading,
+        token
       }}
     >
       {!loading && children}

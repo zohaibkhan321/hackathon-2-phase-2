@@ -3,11 +3,14 @@
 import React, { useState, useEffect } from 'react';
 import TaskList from '../../components/TaskList';
 import TaskForm from '../../components/TaskForm';
+import ChatModal from '../../components/ChatModal';
 import { apiClient } from '@/lib/api';
+import { MessageCircle } from 'lucide-react';
 
 const DashboardPage = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   useEffect(() => {
     fetchTasks();
@@ -45,7 +48,7 @@ const DashboardPage = () => {
   }
 
   return (
-    <div>
+    <div className="relative">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
         <div className="flex-1 min-w-0">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
@@ -66,6 +69,17 @@ const DashboardPage = () => {
           <TaskForm onTaskCreated={handleTaskCreated} />
         </div>
       </div>
+      
+      {/* Floating Chat Button - Bottom Right */}
+      <button
+        onClick={() => setIsChatOpen(true)}
+        className="fixed bottom-6 right-6 w-14 h-14 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 flex items-center justify-center transition-all hover:scale-110 z-40"
+        aria-label="Open chat assistant"
+      >
+        <MessageCircle className="w-6 h-6" />
+      </button>
+      
+      <ChatModal isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} onTasksRefresh={fetchTasks} />
     </div>
   );
 };
