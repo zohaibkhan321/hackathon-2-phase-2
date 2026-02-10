@@ -1,7 +1,7 @@
 // lib/api.ts
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000/api';
+  process.env.NEXT_PUBLIC_API_URL ?? 'https://hackathon-2-phase-2-backend.vercel.app/api';
 
 /* ================================
    Types
